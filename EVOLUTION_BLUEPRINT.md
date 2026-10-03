@@ -30,7 +30,7 @@ The state mutation pipeline operates in four deterministic phases:
 1. **Ingestion Phase**: Fetches target payloads via the GitHub API Ingestion Module (`ReadFileSchema`), decoding Base64 payloads while extracting metadata (SHA, byte size, relative path).
 2. **Validation Phase**: Enforces Zod schema conformance, structural integrity of boundary markers (e.g., `<!-- INJECT:START -->` / `<!-- INJECT:END -->`), and rigorous path traversal defenses.
 3. **Snapshot Phase**: Creates atomic, timestamped snapshot files in isolated `.evolve_backups/` directories with strict file permission modes (`0600`).
-4. **Execution & Commit Phase**: Performs atomic write operations and updates runtime state tracking for target modules.
+4. **Execution & Commit Phase**: Performs atomic write operations via temporary swapfiles and atomic renames, updating runtime state tracking for target modules.
 
 ### Core Implementation (`src/engine/updateModule.ts`)
 
@@ -43,6 +43,7 @@ The state mutation pipeline operates in four deterministic phases:
 
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { z } from 'zod';
 
 export const InjectionMarkerSchema = z.object({
@@ -63,11 +64,20 @@ export interface EvolutionOptions {
  * Validates target path against unauthorized directory traversal or sensitive paths.
  */
 function validateSecurePath(targetPath: string): string {
+  if (!targetPath || typeof targetPath !== 'string') {
+    throw new Error('Security Violation: Invalid target path format.');
+  }
+
+  // Check for null-byte injection attempts
+  if (targetPath.indexOf('\0') !== -1) {
+    throw new Error('Security Violation: Null byte detected in target path.');
+  }
+
   const resolvedPath = path.resolve(targetPath);
   const normalizedNormalized = path.normalize(resolvedPath);
   
   // Defense-in-depth: Disallow relative parent traversals outside expected working roots or system paths
-  if (normalizedNormalized.includes('..')) {
+  if (normalizedNormalized.includes('..') || path.relative(process.cwd(), normalizedNormalized).startsWith('..')) {
     throw new Error('Security Violation: Potential path traversal detected in target path.');
   }
   
@@ -79,6 +89,7 @@ function validateSecurePath(targetPath: string): string {
  */
 export async function injectAtomicModule(options: EvolutionOptions): Promise<boolean> {
   const { targetPath, payload, markers, createSnapshot = true } = options;
+  const validatedMarkers = InjectionMarkerSchema.parse(markers);
   const resolvedPath = validateSecurePath(targetPath);
 
   if (createSnapshot) {
@@ -86,7 +97,8 @@ export async function injectAtomicModule(options: EvolutionOptions): Promise<boo
     await fs.mkdir(backupDir, { recursive: true, mode: 0o700 });
     
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const snapshotPath = path.join(backupDir, `${path.basename(resolvedPath)}.${timestamp}.bak`);
+    const randomNonce = crypto.randomBytes(4).toString('hex');
+    const snapshotPath = path.join(backupDir, `${path.basename(resolvedPath)}.${timestamp}.${randomNonce}.bak`);
     
     try {
       const existingContent = await fs.readFile(resolvedPath, 'utf8');
@@ -99,8 +111,8 @@ export async function injectAtomicModule(options: EvolutionOptions): Promise<boo
   }
 
   const fileContent = await fs.readFile(resolvedPath, 'utf8');
-  const matchStart = markers.start.exec(fileContent);
-  const matchEnd = markers.end.exec(fileContent);
+  const matchStart = validatedMarkers.start.exec(fileContent);
+  const matchEnd = validatedMarkers.end.exec(fileContent);
 
   if (!matchStart || !matchEnd || matchStart.index >= matchEnd.index) {
     throw new Error('Invalid or non-existent injection markers in target file.');
@@ -111,7 +123,20 @@ export async function injectAtomicModule(options: EvolutionOptions): Promise<boo
     '\n' + payload + '\n' +
     fileContent.slice(matchEnd.index);
 
-  await fs.writeFile(resolvedPath, updatedContent, 'utf8');
+  // Atomic write via temporary file replacement to avoid race conditions or corrupted partial writes
+  const tempPath = `${resolvedPath}.${process.pid}.${Date.now()}.${crypto.randomBytes(4).toString('hex')}.tmp`;
+  try {
+    await fs.writeFile(tempPath, updatedContent, { mode: 0o644, encoding: 'utf8' });
+    await fs.rename(tempPath, resolvedPath);
+  } catch (error) {
+    try {
+      await fs.unlink(tempPath);
+    } catch {
+      // Ignore cleanup error if temp file does not exist
+    }
+    throw new Error(`Atomic module mutation failed: ${(error as Error).message}`);
+  }
+
   return true;
 }
 ```
