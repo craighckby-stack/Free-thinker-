@@ -104,7 +104,7 @@ export const SENSITIVE_PATTERNS: readonly SensitivePattern[] = [
   { name: 'Mailgun API Key', regex: /key-[0-9a-zA-Z]{32}/g, confidence: 'high' },
   { name: 'JWT Token', regex: /eyJ[a-zA-Z0-9_-]{10,}\.eyJ[a-zA-Z0-9_-]{10,}\.[a-zA-Z0-9_-]{10,}/g, confidence: 'low' },
   { name: 'RSA Private Key', regex: /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/g, confidence: 'high' },
-  { name: 'OAuth/Bearer Token', regex: /Bearer\s+([a-zA-Z0-9\-._~+/]+=*)/gi, confidence: 'low' },
+  { name: 'OAuth/<OAUTH_BEARER_TOKEN_REDACTED>', regex: /Bearer\s+([a-zA-Z0-9\-._~+/]+=*)/gi, confidence: 'low' },
   { name: 'Credit Card', regex: /\b(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|3[47][0-9]{13}|6(?:011|5[0-9]{2})[0-9]{12})\b/g, confidence: 'medium', validate: luhnCheck },
   { name: 'Email Address', regex: /\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b/g, confidence: 'low' },
   { name: 'IP Address', regex: /\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/g, confidence: 'low' },

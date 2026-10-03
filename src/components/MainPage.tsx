@@ -4858,7 +4858,7 @@ export default function Home() {
                 <input
                   dir="ltr"
                   type="password"
-                  placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                  placeholder="<GITHUB_PAT_REDACTED>"
                   value={tokenInput}
                   onChange={(e) => {
                     const val = e.target.value;

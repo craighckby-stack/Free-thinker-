@@ -23,7 +23,7 @@ export const ARCHAEOLOGY_PAIRS: CorrectWrongPair[] = [
     pairId: '5e4e56be',
     title: 'reorder middleware registration',
     date: 'Sun Sep 13 11:00:00 2026 +0000',
-    author: 'craighckby <craighckby@example.com>',
+    author: 'craighckby <<EMAIL_ADDRESS_REDACTED>>',
     filesTouched: ['server.ts'],
     category: 'EXPRESS_MIDDLEWARE_ORDER',
     wrongCommitMessage: `bug: register global logger before static route handler, blocking asset serving
@@ -57,7 +57,7 @@ index 2222222..3333333 100644
     pairId: '7689035e',
     title: 'extract jwt validation into middleware',
     date: 'Sun Sep 13 09:10:00 2026 +0000',
-    author: 'craighckby <craighckby@example.com>',
+    author: 'craighckby <<EMAIL_ADDRESS_REDACTED>>',
     filesTouched: ['app.py'],
     category: 'AUTH_MIDDLEWARE_EXTRACTION',
     wrongCommitMessage: `add feature: auth middleware
@@ -116,7 +116,7 @@ index 89abcdef..c1d2e3f 100644
     pairId: 'a1b2c3d4',
     title: 'async error boundary with abort controller',
     date: 'Mon Sep 14 14:20:00 2026 +0000',
-    author: 'craighckby <craighckby@example.com>',
+    author: 'craighckby <<EMAIL_ADDRESS_REDACTED>>',
     filesTouched: ['src/lib/async-fetcher.ts'],
     category: 'ASYNC_TIMEOUT_ABORT_SAFETY',
     wrongCommitMessage: `feat: unhandled async fetch call
@@ -155,7 +155,7 @@ Added 10s timeout abort signal and defensive try/catch fallback state.`,
     pairId: 'd4e5f6a7',
     title: 'memory leak listener cleanup in react hook',
     date: 'Mon Sep 14 16:45:00 2026 +0000',
-    author: 'craighckby <craighckby@example.com>',
+    author: 'craighckby <<EMAIL_ADDRESS_REDACTED>>',
     filesTouched: ['src/hooks/useWindowResize.ts'],
     category: 'MEMORY_LEAK_CLEANUP',
     wrongCommitMessage: `bug: window resize listener missing cleanup

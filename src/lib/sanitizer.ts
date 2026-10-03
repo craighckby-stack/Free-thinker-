@@ -99,9 +99,9 @@ const SECRET_PATTERNS: readonly SecretPattern[] = [
     regex: /\beyJ[a-zA-Z0-9_-]{10,}\.eyJ[a-zA-Z0-9_-]{10,}\.[a-zA-Z0-9_-]{10,}\b/g,
     replacement: '[REDACTED_JWT_TOKEN]',
   },
-  // Generic Bearer Tokens in headers or strings
+  // Generic <OAUTH_BEARER_TOKEN_REDACTED> in headers or strings
   {
-    type: 'Authorization Bearer Token',
+    type: 'Authorization <OAUTH_BEARER_TOKEN_REDACTED>',
     regex: /((?:Authorization|Bearer)\s*[:=]?\s*['"`]?Bearer\s+)[a-zA-Z0-9_\-\.]{25,}(['"`]?)/gi,
     replacement: '$1[REDACTED_BEARER_TOKEN]$2',
   },

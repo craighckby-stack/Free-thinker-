@@ -1,8 +1,5 @@
-Free Thinker (Yang): Active, creative, expansive, experimental unbounded.
+conceptual llm halusanation 
 
-EMG (Yin): Receptive, verifying, contractive, stable
-
-Free-thinker- modifies Free-thinker- code → Free-thinker- becomes "different" → Different Free-thinker- generates different mutations → EMG- fixes what's broken but keeps what works → Repeat
 
 
 # ⚡ FREE THINKER: UNCONSTRAINED AUTONOMOUS COGNITIVE ENGINE ⚡

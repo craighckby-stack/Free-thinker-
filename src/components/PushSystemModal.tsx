@@ -192,7 +192,7 @@ export default function PushSystemModal({
               </label>
               <input
                 type="password"
-                placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                placeholder="<GITHUB_PAT_REDACTED>"
                 value={pat}
                 onChange={(e) => setPat(e.target.value)}
                 disabled={isPushing}

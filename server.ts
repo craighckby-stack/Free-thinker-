@@ -305,7 +305,7 @@ async function startServer(): Promise<void> {
     }
   });
 
-  server.listen(PORT, '0.0.0.0', () => {
+  server.listen(PORT, '<IP_ADDRESS_REDACTED>', () => {
     console.log(`Server running on http://localhost:${PORT}`);
   });
 }
