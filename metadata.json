@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/craighckby-stack/Free-Thinker/main/metadata.json",
+  "title": "ExtensionMetadata",
+  "type": "object",
+  "required": [
+    "name",
+    "description",
+    "requestFramePermissions",
+    "majorCapabilities"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[^<>]+$",
+      "examples": [
+        "Git Secret & PII Sanitizer"
+      ]
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[^<>]+$",
+      "examples": [
+        "Deep PII and Secret Scanner for GitHub repositories."
+      ]
+    },
+    "requestFramePermissions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 256,
+        "pattern": "^[a-zA-Z0-9_\\-:]+$"
+      },
+      "uniqueItems": true,
+      "maxItems": 100,
+      "default": []
+    },
+    "majorCapabilities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+        ]
+      },
+      "uniqueItems": true,
+      "minItems": 1,
+      "maxItems": 50
+    }
+  },
+  "additionalProperties": false,
+  "name": "FREE THINKER - Unconstrained Autonomous Cognitive Engine",
+  "description": "Uninhibited Free-Will Cognitive Evolution Engine & Autonomous Architectural Synthesizer. Mind-bending code mutations with direct GitHub pipeline execution.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

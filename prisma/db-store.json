@@ -1,0 +1,23 @@
+{
+  "session": [
+    {
+      "id": "56e88c2b-82dd-408a-9048-a8897638eee9",
+      "createdAt": "2026-10-03T07:30:31.719Z",
+      "updatedAt": "2026-10-03T07:30:31.719Z",
+      "branch": "ALPHA",
+      "status": "active"
+    },
+    {
+      "id": "02a7ad4b-006b-48b1-a6cc-f8399a30f0ce",
+      "createdAt": "2026-10-03T07:30:31.766Z",
+      "updatedAt": "2026-10-03T07:30:31.766Z",
+      "branch": "ALPHA",
+      "status": "active"
+    }
+  ],
+  "mutationHistory": [],
+  "rejectionRecord": [],
+  "healthSnapshot": [],
+  "user": [],
+  "post": []
+}

@@ -1,0 +1,246 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://emg.core/v49/firebase-blueprint.json",
+  "title": "EMG Core v49 Neural Substrate Firebase Blueprint",
+  "description": "Optimized, type-safe, and resilient schema definition for distributed autonomous agents and substrate state with rigorous defense-in-depth bounds checking.",
+  "definitions": {
+    "AgentId": {
+      "type": "string",
+      "pattern": "^[A-Z0-9_]{1,64}$",
+      "maxLength": 64,
+      "description": "Standardized unique immutable identifier matching strict character and length boundaries."
+    },
+    "Sha256Hash": {
+      "type": "string",
+      "pattern": "^[a-fA-F0-9]{64}$",
+      "description": "Standardized 64-character hexadecimal cryptographic SHA-256 hash."
+    },
+    "SafeNumber": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 9007199254740991,
+      "description": "Safe numeric integer range bounded within JavaScript's MAX_SAFE_INTEGER."
+    },
+    "AgentState": {
+      "title": "Agent State",
+      "description": "Represents the current state and telemetry of an agent in the substrate with strict defensive bounds.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/AgentId",
+          "description": "Unique immutable Agent identifier."
+        },
+        "objective": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024,
+          "description": "The current primary objective function bounded against buffer overflow injection vectors."
+        },
+        "resources": {
+          "$ref": "#/definitions/SafeNumber",
+          "description": "Available resource units bounded to safe numerical limits."
+        },
+        "energy": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 100.0,
+          "description": "Normalized energetic reserve percentage strictly capped between 0 and 100."
+        },
+        "knowledge": {
+          "$ref": "#/definitions/SafeNumber",
+          "description": "Quantified substrate knowledge metric with safe bounds."
+        },
+        "cycleCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991,
+          "description": "Total execution loops processed, guarded against overflow."
+        },
+        "lastAction": {
+          "type": "string",
+          "maxLength": 256,
+          "description": "Mnemonic of the most recent executed operation with explicit length limits."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "idle", "blocked"],
+          "description": "Current lifecycle status indicator restricted to an explicit whitelist."
+        }
+      },
+      "required": ["id", "objective", "cycleCount", "status"]
+    },
+    "WorldState": {
+      "title": "World State",
+      "description": "The shared substrate variables accessible to all autonomous agents with cryptographic integrity tracking and strict type validation.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "entropyCoefficient": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Substrate disorder metric strictly normalized between 0.0 and 1.0."
+        },
+        "structuralCoherence": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Substrate integrity metric strictly normalized between 0.0 and 1.0."
+        },
+        "globalVariables": {
+          "type": "object",
+          "additionalProperties": {
+            "type": ["string", "number", "boolean"]
+          },
+          "maxProperties": 64,
+          "description": "Extensible namespace for global context parameters constrained against arbitrary payload injection."
+        },
+        "lastModifiedBy": {
+          "$ref": "#/definitions/AgentId",
+          "description": "Agent identifier responsible for the last state mutation with verified format."
+        },
+        "lastModifiedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO-8601 timestamp of last state mutation."
+        },
+        "stateHash": {
+          "$ref": "#/definitions/Sha256Hash",
+          "description": "SHA-256 cryptographic hash of the entire world state for absolute integrity verification."
+        }
+      },
+      "required": ["entropyCoefficient", "structuralCoherence", "stateHash", "lastModifiedAt"]
+    },
+    "AuditLog": {
+      "title": "Audit Log",
+      "description": "A cryptographic-style immutable ledger of all agentic interactions and state mutations with defensive validation.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO-8601 log recording time."
+        },
+        "agentId": {
+          "$ref": "#/definitions/AgentId",
+          "description": "Originating agent identifier with strict bounds."
+        },
+        "modelCallId": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "Associated LLM or neural execution session identifier."
+        },
+        "action": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "description": "Action intent descriptor with enforced size constraints."
+        },
+        "preStateHash": {
+          "$ref": "#/definitions/Sha256Hash",
+          "description": "World state hash before action extraction and execution."
+        },
+        "postStateHash": {
+          "$ref": "#/definitions/Sha256Hash",
+          "description": "World state hash after action execution."
+        },
+        "delta": {
+          "type": "object",
+          "additionalProperties": {
+            "type": ["string", "number", "boolean", "null"]
+          },
+          "maxProperties": 32,
+          "description": "Computed state change differential payload with type constraints."
+        },
+        "outcome": {
+          "type": "string",
+          "maxLength": 512,
+          "description": "Resulting execution status narrative or code."
+        },
+        "harmScore": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Safety gate calculated risk metric strictly bounded."
+        },
+        "allowedByCommitGate": {
+          "type": "boolean",
+          "description": "Boolean flag denoting whether the commit gate authorized the operation."
+        }
+      },
+      "required": ["timestamp", "agentId", "action", "preStateHash", "allowedByCommitGate"]
+    },
+    "LearningLog": {
+      "title": "Learning Log",
+      "description": "Representing cognitive findings, compiled lessons, bug postmortems, or negative constraints to reinforce the autonomous RAG brain.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string", "enum": ["learning", "bug", "postmortem"] },
+        "title": { "type": "string", "maxLength": 256 },
+        "symptom": { "type": "string", "maxLength": 1024 },
+        "evidence": { "type": "string", "maxLength": 8192 },
+        "constraint": { "type": "string", "maxLength": 4096 },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["type", "title", "timestamp"]
+    },
+    "BrainChunk": {
+      "title": "Brain Chunk",
+      "description": "A compressed knowledge snippet stored within the RAG context.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "sourceName": { "type": "string", "maxLength": 256 },
+        "fileName": { "type": "string", "maxLength": 256 },
+        "binaryCode": { "type": "string" },
+        "generation": { "type": "integer" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["sourceName", "fileName", "binaryCode", "generation", "timestamp"]
+    }
+  },
+  "entities": {
+    "AgentState": {
+      "$ref": "#/definitions/AgentState"
+    },
+    "WorldState": {
+      "$ref": "#/definitions/WorldState"
+    },
+    "AuditLog": {
+      "$ref": "#/definitions/AuditLog"
+    },
+    "LearningLog": {
+      "$ref": "#/definitions/LearningLog"
+    },
+    "BrainChunk": {
+      "$ref": "#/definitions/BrainChunk"
+    }
+  },
+  "firestore": {
+    "/agents/{agentId}": {
+      "schema": { "$ref": "#/definitions/AgentState" },
+      "description": "Individual agent telemetry collection path with strict validation rules."
+    },
+    "/world/current": {
+      "schema": { "$ref": "#/definitions/WorldState" },
+      "description": "The primary singleton shared substrate document."
+    },
+    "/audit_logs/{logId}": {
+      "schema": { "$ref": "#/definitions/AuditLog" },
+      "description": "Append-only immutable history collection of agent interactions."
+    },
+    "/dalek_rag_brain/{chunkId}": {
+      "schema": { "$ref": "#/definitions/BrainChunk" },
+      "description": "Autonomous RAG code chunks used for mutation synthesis context."
+    },
+    "/dalek_learning_logs/{logId}": {
+      "schema": { "$ref": "#/definitions/LearningLog" },
+      "description": "Learning, bug, and postmortem logs loaded by RAG before LLM generations."
+    }
+  }
+}
