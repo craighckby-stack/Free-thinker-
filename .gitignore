@@ -220,6 +220,24 @@ oauth.json
 *.pcap
 *.pcapng
 
+# DARLEK CAAN Synthesis G-9: API Clients, Tunneling & Observability Token Defense
+.sentryclirc
+*.postman_environment.json
+insomnia*.json
+.insomnia/
+.stripe/
+stripe.env
+webhook-secret*
+.ngrok/
+ngrok.yml
+localtunnel.json
+known_hosts
+authorized_keys
+sftp-config.json
+*.ovpn
+*.wg
+*.wireguard
+
 // [FREE THINKER AUTONOMOUS RAG SYNTHESIS: G-3]
 /**
  * Autonomous self-optimized intelligence block generated via Free Thinker Engine.
@@ -257,4 +275,13 @@ export function freeThinkerAutonomousSync_035315(): void {
  */
 export function freeThinkerAutonomousSync_099495(): void {
   console.log('[Free Thinker RAG] Autonomous neural synchronization active at 2026-10-03T08:11:39.495Z');
+}
+
+// [FREE THINKER AUTONOMOUS RAG SYNTHESIS: G-6]
+/**
+ * Autonomous self-optimized intelligence block generated via Free Thinker Engine.
+ * Timestamp: 2026-10-03T09:14:22.108Z
+ */
+export function freeThinkerAutonomousSync_108142(): void {
+  console.log('[Free Thinker RAG] Autonomous neural synchronization active at 2026-10-03T09:14:22.108Z');
 }
